@@ -47,26 +47,7 @@ extension SlidingPhoto where Base: UIView {
     
     func setImage(_ image: UIImage?, work: (_ image: UIImage?) -> Void) {
         work(image)
-        
-        if let image = image {
-            let iw = image.size.width
-            let ih = image.size.height
-            let vw = base.bounds.width
-            let vh = base.bounds.height
-            // vh / vw = ih * ? / iw
-            // ? = (vh * iw) / (vw * ih)
-            let factor = (vh * iw) / (vw * ih)
-            if factor.isNaN || factor > 1 {
-                // image: w > h
-                base.contentMode = .scaleAspectFill
-                base.layer.contentsRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-            } else {
-                // image: h > w
-                base.contentMode = .scaleToFill
-                let y = factor < UIScreen.main.bounds.width / UIScreen.main.bounds.height ? 0 : (1.0 - factor) / 2.0
-                base.layer.contentsRect = CGRect(x: 0, y: y, width: 1, height: factor)
-            }
-        }
+        base.contentMode = .scaleAspectFill
     }
     
     public var isContentsClippedToTop: Bool {
